@@ -1,13 +1,12 @@
 <template>
   <div class="app">
     <NavBar />
-    <CountriesList />
+    <router-view />
   </div>
 </template>
 
 <script setup>
 
-import CountriesList from './components/CountriesList.vue';
 import NavBar from './components/NavBar.vue';
 
 </script>

@@ -1,6 +1,7 @@
 <script setup>
     import { h, reactive, onMounted } from 'vue';
     import { fetchCountries } from '../../api/fetchCountries';
+    import { RouterLink } from 'vue-router';
 
     const countryList = reactive([])
 
@@ -22,20 +23,16 @@
         }
     })
 
-    console.log(countryList)
-
     function Countries() {
         return h("aside", {class: "countries-list"}, [
             h("ul", {class: "countries"}, 
                 countryList.map(country =>
-                    h("li", {class: "country", key: country.alpha3Code}, [
-                        h("img", {src: `https://flagpedia.net/data/flags/icon/72x54/${country.alpha2Code.toLowerCase()}.png`}),
-                        h("router-link", 
-                            {
-                                to: { name: 'details', params: {alpha3Code: country.alpha3Code } },
-                            },
-                            country.name.common
-                        )
+                    h(RouterLink, { 
+                        to: `/list/${country.alpha3Code}`, key: country.alpha3Code 
+                    },
+                    [
+                        h("img", { src: `https://flagpedia.net/data/flags/icon/72x54/${country.alpha2Code.toLowerCase()}.png` }),
+                        h("span", {}, country.name.common)
                     ])
                 )
             )
@@ -45,30 +42,34 @@
 
 <template>
     <Countries />
+    <router-view />
 </template>
 
-<style>
-    aside {
-        height: 90vh;
-        width: 50%;
+<style> 
+  aside {
+    height: 90vh;
+    width: 50%;
+    float: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+
+    ul {
+        height: 100%;
+
+      a {
+        padding: 1rem 0;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
-        overflow-y: scroll;
-
-        ul {
-            height: 100%;
-
-            .country {
-                padding: 1rem 0;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;
-                gap: 20px;
-                border: 1px solid rgba(0, 0, 0, 0.23);
-            }
-        }
+        gap: 20px;
+        border: 1px solid rgba(0, 0, 0, 0.23);
+        text-decoration: none;
+        color: black;
+      }
     }
+  }
 </style>
